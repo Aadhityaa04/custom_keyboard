@@ -9,13 +9,13 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from pin import Ui_PinWindow
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(589, 360)
+        MainWindow.resize(589, 360) 
         MainWindow.setAutoFillBackground(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -66,9 +66,9 @@ class Ui_MainWindow(object):
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
         self.pushButton_6.setGeometry(QtCore.QRect(210, 110, 80, 80))
         self.pushButton_6.setObjectName("pushButton_6")
-        self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(10, 10, 80, 80))
-        self.pushButton.setObjectName("pushButton")
+        self.pushButton_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_1.setGeometry(QtCore.QRect(10, 10, 80, 80))
+        self.pushButton_1.setObjectName("pushButton")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
         self.pushButton_4.setGeometry(QtCore.QRect(110, 110, 80, 80))
         self.pushButton_4.setObjectName("pushButton_4")
@@ -104,8 +104,6 @@ class Ui_MainWindow(object):
 "")
         self.verify_btn.setText("")
         self.verify_btn.setObjectName("verify_btn")
-        self.verify_btn.clicked.connect(printing)
-
         self.upload_btn = QtWidgets.QPushButton(self.centralwidget)
         self.upload_btn.setGeometry(QtCore.QRect(150, 30, 71, 51))
         self.upload_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -153,7 +151,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "2"))
         self.pushButton_9.setText(_translate("MainWindow", "8"))
         self.pushButton_6.setText(_translate("MainWindow", "6"))
-        self.pushButton.setText(_translate("MainWindow", "1"))
+        self.pushButton_1.setText(_translate("MainWindow", "1"))
         self.pushButton_4.setText(_translate("MainWindow", "5"))
         self.label.setText(_translate("MainWindow", "Microcontroller Connected to: "))
         self.label_2.setText(_translate("MainWindow", "None"))
@@ -165,16 +163,34 @@ class Ui_MainWindow(object):
         self.actionExport_Config.setText(_translate("MainWindow", "Export Config"))
         self.actionDetect_Controller.setText(_translate("MainWindow", "Detect Controller"))
         self.actionVerify_Layout.setText(_translate("MainWindow", "Verify Layout"))
+
+class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.pushButton_1.clicked.connect(self.open_second_window)
+        self.pushButton_2.clicked.connect(self.open_second_window)
+        self.pushButton_3.clicked.connect(self.open_second_window)
+        self.pushButton_4.clicked.connect(self.open_second_window)
+        self.pushButton_5.clicked.connect(self.open_second_window)
+        self.pushButton_6.clicked.connect(self.open_second_window)
+        self.pushButton_7.clicked.connect(self.open_second_window)
+        self.pushButton_8.clicked.connect(self.open_second_window)
+        self.pushButton_9.clicked.connect(self.open_second_window)
+
+    
+    def open_second_window(self):
+        pin_number = 5  # Example pin number
+        self.second_window = QtWidgets.QMainWindow()
+        self.ui = Ui_PinWindow(pin_number)
+        self.ui.setupUi(self.second_window)
+        self.second_window.show()
+
 import main_rc
 
-def printing():
-    print("Hello")
-    
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
+    MainWindow = MainWindow()
     MainWindow.show()
     sys.exit(app.exec_())
