@@ -14,11 +14,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_PinWindow(object):
     def __init__(self, pin_number):
         self.pin_number = pin_number
-
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(400, 150)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+    def setupUi(self, PinWindow):
+        PinWindow.setObjectName("PinWindow")
+        PinWindow.resize(400, 189)
+        self.centralwidget = QtWidgets.QWidget(PinWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pin_label = QtWidgets.QLabel(self.centralwidget)
         self.pin_label.setGeometry(QtCore.QRect(60, 20, 71, 31))
@@ -32,31 +31,35 @@ class Ui_PinWindow(object):
         self.command_entry = QtWidgets.QLineEdit(self.centralwidget)
         self.command_entry.setGeometry(QtCore.QRect(140, 70, 211, 31))
         self.command_entry.setObjectName("command_entry")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.ok_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.ok_btn.setGeometry(QtCore.QRect(160, 110, 91, 31))
+        self.ok_btn.setObjectName("ok_btn")
+        PinWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(PinWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 400, 24))
         self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        PinWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(PinWindow)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        PinWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi(PinWindow)
+        QtCore.QMetaObject.connectSlotsByName(PinWindow)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, PinWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pin_label.setText(_translate("MainWindow", "Pin"))
-        self.command_label.setText(_translate("MainWindow", "command"))
+        PinWindow.setWindowTitle(_translate("PinWindow", "MainWindow"))
+        self.pin_label.setText(_translate("PinWindow", "Pin"))
+        self.command_label.setText(_translate("PinWindow", "command"))
+        self.ok_btn.setText(_translate("PinWindow", "Ok"))
 import main_rc
 
 
-# if __name__ == "__main__":
-#     import sys
-#     app = QtWidgets.QApplication(sys.argv)
-#     MainWindow = QtWidgets.QMainWindow()
-#     ui = Ui_PinWindow()
-#     ui.setupUi(MainWindow)
-#     MainWindow.show()
-#     sys.exit(app.exec_())
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    PinWindow = QtWidgets.QMainWindow()
+    ui = Ui_PinWindow()
+    ui.setupUi(PinWindow)
+    PinWindow.show()
+    sys.exit(app.exec_())
