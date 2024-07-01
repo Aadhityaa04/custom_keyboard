@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_PinWindow(object):
     def __init__(self, pin_number):
-        self.pin_number = pin_number
+        self.pin_number = pin_number     
     def setupUi(self, PinWindow):
         PinWindow.setObjectName("PinWindow")
         PinWindow.resize(400, 189)
