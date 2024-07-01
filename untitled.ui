@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>580</width>
+    <width>589</width>
     <height>360</height>
    </rect>
   </property>
@@ -120,6 +120,9 @@
        <width>80</width>
        <height>80</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>9</string>
@@ -320,7 +323,9 @@
      <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="styleSheet">
-     <string notr="true">image: url(:/verify_svg/Group 2.svg);</string>
+     <string notr="true">image: url(:/verify_svg/Group 2.svg);
+border-radius:1;
+</string>
     </property>
     <property name="text">
      <string/>
@@ -339,7 +344,8 @@
      <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="styleSheet">
-     <string notr="true">image: url(:/upload/uploadupload.svg);</string>
+     <string notr="true">image: url(:/upload/uploadupload.svg);
+border-radius: 1;</string>
     </property>
     <property name="text">
      <string/>
@@ -351,7 +357,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>580</width>
+     <width>589</width>
      <height>24</height>
     </rect>
    </property>
