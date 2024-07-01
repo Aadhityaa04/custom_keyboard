@@ -395,7 +395,7 @@
   </action>
  </widget>
  <resources>
-  <include location="custom_keyboard/main.qrc"/>
+  <include location="main.qrc"/>
  </resources>
  <connections/>
 </ui>
