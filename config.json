@@ -1,9 +1,11 @@
 {
-    "SW1": [7, "ctrl+shift+s"],
-    "SW2": [4, "ctrl+shift+c"],
-    "SW3": [2, "win+shift+s"],
-    "SW4": [14, "win+shift+c"],
-    "SW5": [15, "win+shift+v"],
-    "SW6": [18, "ctrl+tab"],
-    "SW7": [8, "win+i"]
+    "SW1": [7, "esc"],
+    "SW2": [4, "alt_l+tab"],
+    "SW3": [2, "ctrl_l+c"],
+    "SW4": [14, "ctrl_l+v"],
+    "SW5": [15, "page_up"],
+    "SW6": [18, "ctrl_l+z"],
+    "SW7": [8, "up"],
+    "SW8": [10,"page_down"],
+    "SW9": [16, "down"]
 }

@@ -1,4 +1,3 @@
-// #include <Keyboard.h>
 #include <HID-Project.h>
 
 // Define pin constants
@@ -36,7 +35,6 @@ unsigned long lastButtonPress = 0;
 const unsigned long debounceDelay = 50;
 bool buttonPressed = false;
 
-
 void setup() {
   Serial.begin(9600);
   Keyboard.begin();
@@ -73,7 +71,6 @@ void loop() {
 
   // Check if button SW1 was pressed
   if (currentStateSW1 == LOW && lastStateSW1 == HIGH) {
-    Serial.println("KEY_ESC");
     Keyboard.press(KEY_ESC);
     delay(100);
     Keyboard.releaseAll();
@@ -81,7 +78,6 @@ void loop() {
 
   // Check if button SW2 was pressed
   if (currentStateSW2 == LOW && lastStateSW2 == HIGH) {
-    Serial.println("ALT+TAB");
     Keyboard.press(KEY_LEFT_ALT);
     Keyboard.press(KEY_TAB);
     delay(100);
@@ -90,7 +86,6 @@ void loop() {
 
   // Check if button SW3 was pressed
   if (currentStateSW3 == LOW && lastStateSW3 == HIGH) {
-    Serial.println("CTRL+C");
     Keyboard.press(KEY_LEFT_CTRL);
     Keyboard.press('c');
     delay(100);
@@ -99,7 +94,6 @@ void loop() {
 
   // Check if button SW4 was pressed
   if (currentStateSW4 == LOW && lastStateSW4 == HIGH) {
-    Serial.println("CTRL+v");
     Keyboard.press(KEY_LEFT_CTRL);
     Keyboard.press('v');
     delay(100);
@@ -108,7 +102,6 @@ void loop() {
 
   // Check if button SW5 was pressed
   if (currentStateSW5 == LOW && lastStateSW5 == HIGH) {
-    Serial.println("KEY_PAGE_UP");
     Keyboard.press(KEY_PAGE_UP);
     delay(100);
     Keyboard.releaseAll();
@@ -116,7 +109,6 @@ void loop() {
 
   // Check if button SW6 was pressed
   if (currentStateSW6 == LOW && lastStateSW6 == HIGH) {
-    Serial.println("CTRL Z");
     Keyboard.press(KEY_LEFT_CTRL);
     Keyboard.press('z');
     delay(100);
@@ -125,14 +117,12 @@ void loop() {
 
   // Check if button SW6 was pressed
   if (currentStateSW7 == LOW && lastStateSW7 == HIGH) {
-    Serial.println("KEY_UP_ARROW");
     Keyboard.press(KEY_UP_ARROW);
     delay(100);
     Keyboard.releaseAll();
   }
   // Check if button SW8 was pressed
   if (currentStateSW8 == LOW && lastStateSW8 == HIGH) {
-    Serial.println("KEY_PAGE_DOWN");
     Keyboard.press(KEY_PAGE_DOWN);
     delay(100);
     Keyboard.releaseAll();
@@ -140,7 +130,6 @@ void loop() {
 
   // Check if button SW9 was pressed
   if (currentStateSW9 == LOW && lastStateSW9 == HIGH) {
-    Serial.println("KEY_DOWN_ARROW");
     Keyboard.press(KEY_DOWN_ARROW);
     delay(100);
     Keyboard.releaseAll();
