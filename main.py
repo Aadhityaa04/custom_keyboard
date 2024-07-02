@@ -10,12 +10,12 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pin import Ui_PinWindow
-
+import backend
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(589, 360) 
+        MainWindow.setFixedSize(589, 360) 
         MainWindow.setAutoFillBackground(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -129,6 +129,7 @@ class Ui_MainWindow(object):
         self.actionExport_Config.setObjectName("actionExport_Config")
         self.actionDetect_Controller = QtWidgets.QAction(MainWindow)
         self.actionDetect_Controller.setObjectName("actionDetect_Controller")
+        self.actionDetect_Controller.triggered.connect(backend.get_com_ports)
         self.actionVerify_Layout = QtWidgets.QAction(MainWindow)
         self.actionVerify_Layout.setObjectName("actionVerify_Layout")
         self.menuFile.addAction(self.actionImport_Config)
@@ -194,3 +195,5 @@ if __name__ == "__main__":
     MainWindow = MainWindow()
     MainWindow.show()
     sys.exit(app.exec_())
+
+
