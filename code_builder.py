@@ -2,6 +2,7 @@ import json
 import os
 
 key_mappings = {
+
     "backspace": "KEY_BACKSPACE",
     "caps_lock": "KEY_CAPS_LOCK",
     "delete": "KEY_DELETE",
@@ -100,6 +101,10 @@ key_mappings = {
     "0": "0",
 
 }
+ctrl_1_0 = 'MEDIA_VOL_DOWN'
+ctrl_1_1 = 'MEDIA_VOL_UP'
+ctrl_2_0 = 'CONSUMER_BRIGHTNESS_DOWN'
+ctrl_2_1 = 'CONSUMER_BRIGHTNESS_UP'
 if os.path.exists("config.json"):
     with open("config.json", "r") as file:
         content = json.load(file)
@@ -119,13 +124,13 @@ if os.path.exists("config.json"):
             arduino_code.write("\n// Variables to hold the last state of the buttons\n")
             for key in content:
                 arduino_code.write(f"bool lastState{key} = HIGH;\n")
-            arduino_code.write("int counter = 0;\nint currentStateCLK;\nint lastStateCLK;\nint btnstate = 0;\nString currentDir = "";\nunsigned long lastButtonPress = 0;\nconst unsigned long debounceDelay = 50;\nbool buttonPressed = false;\n")
+            arduino_code.write('int counter = 0;\nint currentStateCLK;\nint lastStateCLK;\nint btnstate = 0;\nString currentDir = "";\nunsigned long lastButtonPress = 0;\nconst unsigned long debounceDelay = 50;\nbool buttonPressed = false;\n')
 
             # setup function
             arduino_code.write("\nvoid setup() {\n")
             arduino_code.write("\tSerial.begin(9600);\n\tKeyboard.begin();\n\tConsumer.begin();\n\n")
             for key in content:
-                arduino_code.write(f"\tpinMode({key}, INPUT_PULLPU);\n")
+                arduino_code.write(f"\tpinMode({key}, INPUT_PULLUP);\n")
             arduino_code.write("\tpinMode(CLK, INPUT);\n\tpinMode(DT, INPUT);\n\tpinMode(SW, INPUT_PULLUP);\n\tpinMode(LED_ZOOM, OUTPUT);\n\tpinMode(LED_VOLUME, OUTPUT);\n\tlastStateCLK = digitalRead(CLK);\n")
             arduino_code.write("}\n")
             
@@ -148,10 +153,20 @@ if os.path.exists("config.json"):
             for key in content:
                 arduino_code.write(f"\tlastState{key} = currentState{key};\n")
             arduino_code.write( "\n\tcurrentStateCLK = digitalRead(CLK);\n\tif (currentStateCLK != lastStateCLK && currentStateCLK == 1) {")
-            arduino_code.write('\n\t\tif (digitalRead(DT) != currentStateCLK) {\n\t\t\tcounter--;\n\t\t\tcurrentDir = "CCW";\n\t\t} else {\n\t\t\tcounter++;\n\t\t\tcurrentDir = "CW";\n\t\t}\n\t}')
+            arduino_code.write('\n\t\tif (digitalRead(DT) != currentStateCLK) {\n\t\t\tcounter--;\n\t\t\tcurrentDir = "CCW";\n\t\t} else {\n\t\t\tcounter++;\n\t\t\tcurrentDir = "CW";\n\t\t}')
+            arduino_code.write('\n\t// Perform action based on the current mode\n\tif (btnstate == 1) {  // Volume control mode\n\t\tif (currentDir == "CW") {')
+            arduino_code.write(f"\n\t\t\tConsumer.write({ctrl_1_0});")
+            arduino_code.write('\n\t\t} else if (currentDir == "CCW") {')
+            arduino_code.write(f"\n\t\t\tConsumer.write({ctrl_1_1});\n\t\t}}")
+            arduino_code.write('\n\t\t} else {  // Zoom control mode\n\t\t\tif (currentDir == "CW") {')
+            arduino_code.write(f"\n\t\t\t\tConsumer.write({ctrl_2_0});")
+            arduino_code.write(f'\n\t\t\t\tdelay(50);\n\t\t\t\tKeyboard.releaseAll();\n\t\t\t}} else if (currentDir == "CCW") {{')
+            arduino_code.write(f"\n\t\t\t\tConsumer.write({ctrl_2_1});")
+            arduino_code.write(f'\n\t\t\t\tdelay(50);\n\t\t\t\tKeyboard.releaseAll();')
+            arduino_code.write('\n\t\t\t}\n\t\t}\n\t}\n')
             arduino_code.write("\n\t//Encoder handelling\n\tlastStateCLK = currentStateCLK;\n\n\tint buttonState = digitalRead(SW);\n\tif (buttonState == LOW) {\n\t\tif (!buttonPressed) {\n\t\t\tunsigned long currentMillis = millis();")
-            arduino_code.write('\n\t\t\tif (currentMillis - lastButtonPress > debounceDelay) {\n\t\t\t\tbtnstate = !btnstate;\n\t\t\t\tif (btnstate) {\n\t\t\t\t\tSerial.println("Entered Volume control mode");')
-            arduino_code.write('\n\t\t\t\t\tdigitalWrite(LED_VOLUME, HIGH);\n\t\t\t\t\tdigitalWrite(LED_ZOOM, LOW);\n\t\t\t\t} else {\n\t\t\t\t\tSerial.println("Entered Zoom control mode");')
+            arduino_code.write('\n\t\t\tif (currentMillis - lastButtonPress > debounceDelay) {\n\t\t\t\tbtnstate = !btnstate;\n\t\t\t\tif (btnstate) {')
+            arduino_code.write('\n\t\t\t\t\tdigitalWrite(LED_VOLUME, HIGH);\n\t\t\t\t\tdigitalWrite(LED_ZOOM, LOW);\n\t\t\t\t} else {')
             arduino_code.write("\n\t\t\t\t\tdigitalWrite(LED_VOLUME, LOW);\n\t\t\t\t\tdigitalWrite(LED_ZOOM, HIGH);\n\t\t\t\t}\n\t\t\t\t// Update the last button press time\n\t\t\t\tlastButtonPress = currentMillis;")
             arduino_code.write("\n\t\t\t\tbuttonPressed = true;")
             arduino_code.write("\n\t\t\t}\n\t\t}\n\t} else {\n")

@@ -168,12 +168,10 @@ void loop() {
         Consumer.write(CONSUMER_BRIGHTNESS_DOWN);
         delay(50);
         Keyboard.releaseAll();
-        Serial.println("Zoom In");
       } else if (currentDir == "CCW") {
         Consumer.write(CONSUMER_BRIGHTNESS_UP);
         delay(50);
         Keyboard.releaseAll();
-        Serial.println("Zoom Out");
       }
     }
   }
@@ -188,11 +186,9 @@ void loop() {
       if (currentMillis - lastButtonPress > debounceDelay) {
         btnstate = !btnstate;
         if (btnstate) {
-          Serial.println("Entered Volume control mode");
           digitalWrite(LED_VOLUME, HIGH);
           digitalWrite(LED_ZOOM, LOW);
         } else {
-          Serial.println("Entered Zoom control mode");
           digitalWrite(LED_VOLUME, LOW);
           digitalWrite(LED_ZOOM, HIGH);
         }

@@ -30,7 +30,7 @@ int counter = 0;
 int currentStateCLK;
 int lastStateCLK;
 int btnstate = 0;
-String currentDir = ;
+String currentDir = "";
 unsigned long lastButtonPress = 0;
 const unsigned long debounceDelay = 50;
 bool buttonPressed = false;
@@ -40,15 +40,15 @@ void setup() {
 	Keyboard.begin();
 	Consumer.begin();
 
-	pinMode(SW1, INPUT_PULLPU);
-	pinMode(SW2, INPUT_PULLPU);
-	pinMode(SW3, INPUT_PULLPU);
-	pinMode(SW4, INPUT_PULLPU);
-	pinMode(SW5, INPUT_PULLPU);
-	pinMode(SW6, INPUT_PULLPU);
-	pinMode(SW7, INPUT_PULLPU);
-	pinMode(SW8, INPUT_PULLPU);
-	pinMode(SW9, INPUT_PULLPU);
+	pinMode(SW1, INPUT_PULLUP);
+	pinMode(SW2, INPUT_PULLUP);
+	pinMode(SW3, INPUT_PULLUP);
+	pinMode(SW4, INPUT_PULLUP);
+	pinMode(SW5, INPUT_PULLUP);
+	pinMode(SW6, INPUT_PULLUP);
+	pinMode(SW7, INPUT_PULLUP);
+	pinMode(SW8, INPUT_PULLUP);
+	pinMode(SW9, INPUT_PULLUP);
 	pinMode(CLK, INPUT);
 	pinMode(DT, INPUT);
 	pinMode(SW, INPUT_PULLUP);
@@ -155,7 +155,26 @@ void loop() {
 			counter++;
 			currentDir = "CW";
 		}
+	// Perform action based on the current mode
+	if (btnstate == 1) {  // Volume control mode
+		if (currentDir == "CW") {
+			Consumer.write(MEDIA_VOL_DOWN);
+		} else if (currentDir == "CCW") {
+			Consumer.write(MEDIA_VOL_UP);
+		}
+		} else {  // Zoom control mode
+			if (currentDir == "CW") {
+				Consumer.write(CONSUMER_BRIGHTNESS_DOWN);
+				delay(50);
+				Keyboard.releaseAll();
+			} else if (currentDir == "CCW") {
+				Consumer.write(CONSUMER_BRIGHTNESS_UP);
+				delay(50);
+				Keyboard.releaseAll();
+			}
+		}
 	}
+
 	//Encoder handelling
 	lastStateCLK = currentStateCLK;
 
@@ -166,11 +185,9 @@ void loop() {
 			if (currentMillis - lastButtonPress > debounceDelay) {
 				btnstate = !btnstate;
 				if (btnstate) {
-					Serial.println("Entered Volume control mode");
 					digitalWrite(LED_VOLUME, HIGH);
 					digitalWrite(LED_ZOOM, LOW);
 				} else {
-					Serial.println("Entered Zoom control mode");
 					digitalWrite(LED_VOLUME, LOW);
 					digitalWrite(LED_ZOOM, HIGH);
 				}
