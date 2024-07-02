@@ -155,8 +155,31 @@ void loop() {
 			counter++;
 			currentDir = "CW";
 		}
+	}
+	//Encoder handelling
+	lastStateCLK = currentStateCLK;
 
-		Serial.print("Direction: ");
-		Serial.print(currentDir);
-		Serial.print(" | Counter: ");
-		Serial.println(counter);}
+	int buttonState = digitalRead(SW);
+	if (buttonState == LOW) {
+		if (!buttonPressed) {
+			unsigned long currentMillis = millis();
+			if (currentMillis - lastButtonPress > debounceDelay) {
+				btnstate = !btnstate;
+				if (btnstate) {
+					Serial.println("Entered Volume control mode");
+					digitalWrite(LED_VOLUME, HIGH);
+					digitalWrite(LED_ZOOM, LOW);
+				} else {
+					Serial.println("Entered Zoom control mode");
+					digitalWrite(LED_VOLUME, LOW);
+					digitalWrite(LED_ZOOM, HIGH);
+				}
+				// Update the last button press time
+				lastButtonPress = currentMillis;
+				buttonPressed = true;
+			}
+		}
+	} else {
+		buttonPressed = false;
+	}
+}

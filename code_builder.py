@@ -148,9 +148,15 @@ if os.path.exists("config.json"):
             for key in content:
                 arduino_code.write(f"\tlastState{key} = currentState{key};\n")
             arduino_code.write( "\n\tcurrentStateCLK = digitalRead(CLK);\n\tif (currentStateCLK != lastStateCLK && currentStateCLK == 1) {")
-            arduino_code.write('\n\t\tif (digitalRead(DT) != currentStateCLK) {\n\t\t\tcounter--;\n\t\t\tcurrentDir = "CCW";\n\t\t} else {\n\t\t\tcounter++;\n\t\t\tcurrentDir = "CW";\n\t\t}')
-            arduino_code.write('\n\n\t\tSerial.print("Direction: ");\n\t\tSerial.print(currentDir);\n\t\tSerial.print(" | Counter: ");\n\t\tSerial.println(counter);')
-            arduino_code.write("}\n")
+            arduino_code.write('\n\t\tif (digitalRead(DT) != currentStateCLK) {\n\t\t\tcounter--;\n\t\t\tcurrentDir = "CCW";\n\t\t} else {\n\t\t\tcounter++;\n\t\t\tcurrentDir = "CW";\n\t\t}\n\t}')
+            arduino_code.write("\n\t//Encoder handelling\n\tlastStateCLK = currentStateCLK;\n\n\tint buttonState = digitalRead(SW);\n\tif (buttonState == LOW) {\n\t\tif (!buttonPressed) {\n\t\t\tunsigned long currentMillis = millis();")
+            arduino_code.write('\n\t\t\tif (currentMillis - lastButtonPress > debounceDelay) {\n\t\t\t\tbtnstate = !btnstate;\n\t\t\t\tif (btnstate) {\n\t\t\t\t\tSerial.println("Entered Volume control mode");')
+            arduino_code.write('\n\t\t\t\t\tdigitalWrite(LED_VOLUME, HIGH);\n\t\t\t\t\tdigitalWrite(LED_ZOOM, LOW);\n\t\t\t\t} else {\n\t\t\t\t\tSerial.println("Entered Zoom control mode");')
+            arduino_code.write("\n\t\t\t\t\tdigitalWrite(LED_VOLUME, LOW);\n\t\t\t\t\tdigitalWrite(LED_ZOOM, HIGH);\n\t\t\t\t}\n\t\t\t\t// Update the last button press time\n\t\t\t\tlastButtonPress = currentMillis;")
+            arduino_code.write("\n\t\t\t\tbuttonPressed = true;")
+            arduino_code.write("\n\t\t\t}\n\t\t}\n\t} else {\n")
+            arduino_code.write("\t\tbuttonPressed = false;\n\t}")
+            arduino_code.write("\n}\n")
 
 else:
     print("Config.json file missing")

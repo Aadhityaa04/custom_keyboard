@@ -156,19 +156,12 @@ void loop() {
       currentDir = "CW";
     }
 
-    Serial.print("Direction: ");
-    Serial.print(currentDir);
-    Serial.print(" | Counter: ");
-    Serial.println(counter);
-
     // Perform action based on the current mode
     if (btnstate == 1) {  // Volume control mode
       if (currentDir == "CW") {
         Consumer.write(MEDIA_VOL_UP);
-        Serial.println("Volume Up");
       } else if (currentDir == "CCW") {
         Consumer.write(MEDIA_VOL_DOWN);
-        Serial.println("Volume Down");
       }
     } else {  // Zoom control mode
       if (currentDir == "CW") {
