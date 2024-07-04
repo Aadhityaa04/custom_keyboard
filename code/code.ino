@@ -71,31 +71,28 @@ void loop() {
 
 	// Check if button SW1 was pressed
 	if (currentStateSW1 == LOW && lastStateSW1 == HIGH) {
-		Keyboard.press(KEY_ESC);
+		Keyboard.press(KEY_PAGE_UP);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW2 was pressed
 	if (currentStateSW2 == LOW && lastStateSW2 == HIGH) {
-		Keyboard.press(KEY_LEFT_ALT);
-		Keyboard.press(KEY_TAB);
+		Keyboard.press(KEY_PAGE_DOWN);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW3 was pressed
 	if (currentStateSW3 == LOW && lastStateSW3 == HIGH) {
-		Keyboard.press(KEY_LEFT_CTRL);
-		Keyboard.press('c');
+		Keyboard.press(KEY_PAGE_UP);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW4 was pressed
 	if (currentStateSW4 == LOW && lastStateSW4 == HIGH) {
-		Keyboard.press(KEY_LEFT_CTRL);
-		Keyboard.press('v');
+		Keyboard.press(KEY_PAGE_DOWN);
 		delay(100);
 		Keyboard.releaseAll();
 	}
@@ -109,15 +106,14 @@ void loop() {
 
 	// Check if button SW6 was pressed
 	if (currentStateSW6 == LOW && lastStateSW6 == HIGH) {
-		Keyboard.press(KEY_LEFT_CTRL);
-		Keyboard.press('z');
+		Keyboard.press(KEY_PAGE_DOWN);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW7 was pressed
 	if (currentStateSW7 == LOW && lastStateSW7 == HIGH) {
-		Keyboard.press(KEY_UP_ARROW);
+		Keyboard.press(KEY_PAGE_UP);
 		delay(100);
 		Keyboard.releaseAll();
 	}
@@ -131,7 +127,7 @@ void loop() {
 
 	// Check if button SW9 was pressed
 	if (currentStateSW9 == LOW && lastStateSW9 == HIGH) {
-		Keyboard.press(KEY_DOWN_ARROW);
+		Keyboard.press(KEY_PAGE_UP);
 		delay(100);
 		Keyboard.releaseAll();
 	}
