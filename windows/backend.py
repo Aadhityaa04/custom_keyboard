@@ -6,8 +6,9 @@ from tkinter import filedialog, messagebox
 import code_builder
 import threading
 from pynput import keyboard
-
-
+import pyduinocli
+import subprocess
+import re
 
 command_sequence = []
 clear_timeout = 0.5
@@ -168,3 +169,40 @@ def on_release(key):
 def clear_command_sequence():
     global command_sequence
     command_sequence = []
+
+def get_board_list():
+    global com_port_selected
+    if com_port_selected is None:
+        messagebox.showwarning("Warning", message="Please select the COM port")
+    else:
+        info_win = messagebox.showinfo("Uploading", message="Starting board listing...")
+        """Runs the 'arduino-cli board list' command and captures the output."""
+        result = subprocess.run(
+            [r'.\arduino-cli.exe', 'board', 'list'],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            shell=True
+        )
+        if result.returncode != 0:
+            print("Error running command:", result.stderr)
+            return None
+        out = result.stdout.split("\n")
+        for _ in out:
+            temp = _.split(" ")
+            for a in temp:
+                if ":" in a and com_port_selected in temp:
+                    pattern = r'\w+:\w+:\w+'
+                    f_temp = re.findall(pattern, a)
+                    if len(f_temp) > 0:
+                        upload_code(f_temp[0], a)
+
+
+def upload_code(fqbn, comport):
+    if com_port_selected is None:
+        messagebox.showwarning("Warning", message="Please select the COM port")
+    print(fqbn, com_port_selected, "\n\n\n\n")
+    arduino = pyduinocli.Arduino("./arduino-cli")
+    arduino.compile(r"code/code.ino", fqbn=fqbn)
+    arduino.upload(r"code\code.ino", fqbn=fqbn, port=com_port_selected)
+    messagebox.showinfo("Success", message="Frimware has been successfully uploaded to the board")

@@ -10,8 +10,6 @@ const int SW6 = 18;
 const int SW7 = 8;
 const int SW8 = 10;
 const int SW9 = 16;
-const int EN1 = 20;
-const int EN2 = 21;
 #define CLK 3
 #define DT 5
 #define SW A1
@@ -28,8 +26,6 @@ bool lastStateSW6 = HIGH;
 bool lastStateSW7 = HIGH;
 bool lastStateSW8 = HIGH;
 bool lastStateSW9 = HIGH;
-bool lastStateEN1 = HIGH;
-bool lastStateEN2 = HIGH;
 int counter = 0;
 int currentStateCLK;
 int lastStateCLK;
@@ -53,8 +49,6 @@ void setup() {
 	pinMode(SW7, INPUT_PULLUP);
 	pinMode(SW8, INPUT_PULLUP);
 	pinMode(SW9, INPUT_PULLUP);
-	pinMode(EN1, INPUT_PULLUP);
-	pinMode(EN2, INPUT_PULLUP);
 	pinMode(CLK, INPUT);
 	pinMode(DT, INPUT);
 	pinMode(SW, INPUT_PULLUP);
@@ -73,8 +67,6 @@ void loop() {
 	bool currentStateSW7 = digitalRead(SW7);
 	bool currentStateSW8 = digitalRead(SW8);
 	bool currentStateSW9 = digitalRead(SW9);
-	bool currentStateEN1 = digitalRead(EN1);
-	bool currentStateEN2 = digitalRead(EN2);
 
 
 	// Check if button SW1 was pressed
@@ -148,18 +140,6 @@ void loop() {
 		delay(100);
 		Keyboard.releaseAll();
 	}
-
-	// Check if button EN1 was pressed
-	if (currentStateEN1 == LOW && lastStateEN1 == HIGH) {
-		delay(100);
-		Keyboard.releaseAll();
-	}
-
-	// Check if button EN2 was pressed
-	if (currentStateEN2 == LOW && lastStateEN2 == HIGH) {
-		delay(100);
-		Keyboard.releaseAll();
-	}
 	// Update the last state of each button
 	lastStateSW1 = currentStateSW1;
 	lastStateSW2 = currentStateSW2;
@@ -170,8 +150,6 @@ void loop() {
 	lastStateSW7 = currentStateSW7;
 	lastStateSW8 = currentStateSW8;
 	lastStateSW9 = currentStateSW9;
-	lastStateEN1 = currentStateEN1;
-	lastStateEN2 = currentStateEN2;
 
 	currentStateCLK = digitalRead(CLK);
 	if (currentStateCLK != lastStateCLK && currentStateCLK == 1) {

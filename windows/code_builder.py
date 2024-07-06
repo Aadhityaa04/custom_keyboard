@@ -141,18 +141,18 @@ def code_builder():
 
                 # Adding Libraries
                 arduino_code.write("#include <HID-Project.h> \n\n// Define pin constants\n")
-                
+                print(content,"\n\n\n\n\n\n\n\n\n\n\n\n")
                 # Define pin constants
                 for key in content:
-                    print(key == "EN1")
-                    if str(key) != "EN1" or "EN2":
+                    print(key, type(key))
+                    if key != "EN1" and key != "EN2":
                         arduino_code.write(f"const int {key} = {content[key][0]};\n")
                 arduino_code.write("#define CLK 3\n#define DT 5\n#define SW A1\n#define LED_ZOOM A2\n#define LED_VOLUME A3\n")
                 
                 # Variables to hold the last state of the buttons
                 arduino_code.write("\n// Variables to hold the last state of the buttons\n")
                 for key in content:
-                    if key != "EN1" or "EN2":
+                    if key != "EN1" and key != "EN2":
                         arduino_code.write(f"bool lastState{key} = HIGH;\n")
                 arduino_code.write('int counter = 0;\nint currentStateCLK;\nint lastStateCLK;\nint btnstate = 0;\nString currentDir = "";\nunsigned long lastButtonPress = 0;\nconst unsigned long debounceDelay = 50;\nbool buttonPressed = false;\n')
 
@@ -160,7 +160,7 @@ def code_builder():
                 arduino_code.write("\nvoid setup() {\n")
                 arduino_code.write("\tSerial.begin(9600);\n\tKeyboard.begin();\n\tConsumer.begin();\n\n")
                 for key in content:
-                    if key != "EN1" or "EN2":
+                    if key != "EN1" and key != "EN2":
                         arduino_code.write(f"\tpinMode({key}, INPUT_PULLUP);\n")
                 arduino_code.write("\tpinMode(CLK, INPUT);\n\tpinMode(DT, INPUT);\n\tpinMode(SW, INPUT_PULLUP);\n\tpinMode(LED_ZOOM, OUTPUT);\n\tpinMode(LED_VOLUME, OUTPUT);\n\tlastStateCLK = digitalRead(CLK);\n")
                 arduino_code.write("}\n")
@@ -168,11 +168,11 @@ def code_builder():
                 # loop function
                 arduino_code.write("\nvoid loop() {\n")
                 for key in content:
-                    if key != "EN1" or "EN2":
+                    if key != "EN1" and key != "EN2":
                         arduino_code.write(f"\tbool currentState{key} = digitalRead({key});\n")
                 arduino_code.write("\n")
                 for key in content:
-                    if key != "EN1" or "EN2":
+                    if key != "EN1" and key != "EN2":
                         arduino_code.write(f"\n\t// Check if button {key} was pressed\n")
                         arduino_code.write(f"\tif (currentState{key} == LOW && lastState{key} == HIGH) {{\n")
                         temp = content[key][1].split("+")
@@ -185,7 +185,7 @@ def code_builder():
                         arduino_code.write("\t}\n")
                 arduino_code.write("\t// Update the last state of each button\n")
                 for key in content:
-                    if key != "EN1" or "EN2":
+                    if key != "EN1" and key != "EN2":
                         arduino_code.write(f"\tlastState{key} = currentState{key};\n")
                 arduino_code.write( "\n\tcurrentStateCLK = digitalRead(CLK);\n\tif (currentStateCLK != lastStateCLK && currentStateCLK == 1) {")
                 arduino_code.write('\n\t\tif (digitalRead(DT) != currentStateCLK) {\n\t\t\tcounter--;\n\t\t\tcurrentDir = "CCW";\n\t\t} else {\n\t\t\tcounter++;\n\t\t\tcurrentDir = "CW";\n\t\t}')

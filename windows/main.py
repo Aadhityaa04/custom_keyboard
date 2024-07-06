@@ -104,6 +104,7 @@ class Ui_MainWindow(object):
 "border-radius: 1;")
         self.upload_btn.setText("")
         self.upload_btn.setObjectName("upload_btn")
+        self.upload_btn.clicked.connect(backend.get_board_list)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 589, 24))
