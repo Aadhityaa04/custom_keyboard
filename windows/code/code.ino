@@ -1,0 +1,229 @@
+#include <HID-Project.h> 
+
+// Define pin constants
+const int SW1 = 7;
+const int SW2 = 4;
+const int SW3 = 2;
+const int SW4 = 14;
+const int SW5 = 15;
+const int SW6 = 18;
+const int SW7 = 8;
+const int SW8 = 10;
+const int SW9 = 16;
+const int EN1 = 20;
+const int EN2 = 21;
+#define CLK 3
+#define DT 5
+#define SW A1
+#define LED_ZOOM A2
+#define LED_VOLUME A3
+
+// Variables to hold the last state of the buttons
+bool lastStateSW1 = HIGH;
+bool lastStateSW2 = HIGH;
+bool lastStateSW3 = HIGH;
+bool lastStateSW4 = HIGH;
+bool lastStateSW5 = HIGH;
+bool lastStateSW6 = HIGH;
+bool lastStateSW7 = HIGH;
+bool lastStateSW8 = HIGH;
+bool lastStateSW9 = HIGH;
+bool lastStateEN1 = HIGH;
+bool lastStateEN2 = HIGH;
+int counter = 0;
+int currentStateCLK;
+int lastStateCLK;
+int btnstate = 0;
+String currentDir = "";
+unsigned long lastButtonPress = 0;
+const unsigned long debounceDelay = 50;
+bool buttonPressed = false;
+
+void setup() {
+	Serial.begin(9600);
+	Keyboard.begin();
+	Consumer.begin();
+
+	pinMode(SW1, INPUT_PULLUP);
+	pinMode(SW2, INPUT_PULLUP);
+	pinMode(SW3, INPUT_PULLUP);
+	pinMode(SW4, INPUT_PULLUP);
+	pinMode(SW5, INPUT_PULLUP);
+	pinMode(SW6, INPUT_PULLUP);
+	pinMode(SW7, INPUT_PULLUP);
+	pinMode(SW8, INPUT_PULLUP);
+	pinMode(SW9, INPUT_PULLUP);
+	pinMode(EN1, INPUT_PULLUP);
+	pinMode(EN2, INPUT_PULLUP);
+	pinMode(CLK, INPUT);
+	pinMode(DT, INPUT);
+	pinMode(SW, INPUT_PULLUP);
+	pinMode(LED_ZOOM, OUTPUT);
+	pinMode(LED_VOLUME, OUTPUT);
+	lastStateCLK = digitalRead(CLK);
+}
+
+void loop() {
+	bool currentStateSW1 = digitalRead(SW1);
+	bool currentStateSW2 = digitalRead(SW2);
+	bool currentStateSW3 = digitalRead(SW3);
+	bool currentStateSW4 = digitalRead(SW4);
+	bool currentStateSW5 = digitalRead(SW5);
+	bool currentStateSW6 = digitalRead(SW6);
+	bool currentStateSW7 = digitalRead(SW7);
+	bool currentStateSW8 = digitalRead(SW8);
+	bool currentStateSW9 = digitalRead(SW9);
+	bool currentStateEN1 = digitalRead(EN1);
+	bool currentStateEN2 = digitalRead(EN2);
+
+
+	// Check if button SW1 was pressed
+	if (currentStateSW1 == LOW && lastStateSW1 == HIGH) {
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button SW2 was pressed
+	if (currentStateSW2 == LOW && lastStateSW2 == HIGH) {
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press(KEY_TAB);
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button SW3 was pressed
+	if (currentStateSW3 == LOW && lastStateSW3 == HIGH) {
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press('d');
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button SW4 was pressed
+	if (currentStateSW4 == LOW && lastStateSW4 == HIGH) {
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press('l');
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button SW5 was pressed
+	if (currentStateSW5 == LOW && lastStateSW5 == HIGH) {
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press('i');
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button SW6 was pressed
+	if (currentStateSW6 == LOW && lastStateSW6 == HIGH) {
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press('k');
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button SW7 was pressed
+	if (currentStateSW7 == LOW && lastStateSW7 == HIGH) {
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press('p');
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button SW8 was pressed
+	if (currentStateSW8 == LOW && lastStateSW8 == HIGH) {
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button SW9 was pressed
+	if (currentStateSW9 == LOW && lastStateSW9 == HIGH) {
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button EN1 was pressed
+	if (currentStateEN1 == LOW && lastStateEN1 == HIGH) {
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button EN2 was pressed
+	if (currentStateEN2 == LOW && lastStateEN2 == HIGH) {
+		delay(100);
+		Keyboard.releaseAll();
+	}
+	// Update the last state of each button
+	lastStateSW1 = currentStateSW1;
+	lastStateSW2 = currentStateSW2;
+	lastStateSW3 = currentStateSW3;
+	lastStateSW4 = currentStateSW4;
+	lastStateSW5 = currentStateSW5;
+	lastStateSW6 = currentStateSW6;
+	lastStateSW7 = currentStateSW7;
+	lastStateSW8 = currentStateSW8;
+	lastStateSW9 = currentStateSW9;
+	lastStateEN1 = currentStateEN1;
+	lastStateEN2 = currentStateEN2;
+
+	currentStateCLK = digitalRead(CLK);
+	if (currentStateCLK != lastStateCLK && currentStateCLK == 1) {
+		if (digitalRead(DT) != currentStateCLK) {
+			counter--;
+			currentDir = "CCW";
+		} else {
+			counter++;
+			currentDir = "CW";
+		}
+	// Perform action based on the current mode
+	if (btnstate == 1) {  // Volume control mode
+		if (currentDir == "CW") {
+			Consumer.write(MEDIA_PREV);
+		} else if (currentDir == "CCW") {
+			Consumer.write(MEDIA_NEXT);
+		}
+		} else {  // Zoom control mode
+			if (currentDir == "CW") {
+				Consumer.write(MEDIA_VOLUME_DOWN);
+				delay(50);
+				Keyboard.releaseAll();
+			} else if (currentDir == "CCW") {
+				Consumer.write(MEDIA_VOLUME_UP);
+				delay(50);
+				Keyboard.releaseAll();
+			}
+		}
+	}
+
+	//Encoder handelling
+	lastStateCLK = currentStateCLK;
+
+	int buttonState = digitalRead(SW);
+	if (buttonState == LOW) {
+		if (!buttonPressed) {
+			unsigned long currentMillis = millis();
+			if (currentMillis - lastButtonPress > debounceDelay) {
+				btnstate = !btnstate;
+				if (btnstate) {
+					digitalWrite(LED_VOLUME, HIGH);
+					digitalWrite(LED_ZOOM, LOW);
+				} else {
+					digitalWrite(LED_VOLUME, LOW);
+					digitalWrite(LED_ZOOM, HIGH);
+				}
+				// Update the last button press time
+				lastButtonPress = currentMillis;
+				buttonPressed = true;
+			}
+		}
+	} else {
+		buttonPressed = false;
+	}
+}

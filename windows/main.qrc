@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="verify_svg">
+    <file>Group 2.svg</file>
+  </qresource>
+  <qresource prefix="upload">
+    <file>uploadupload.svg</file>
+  </qresource>
+</RCC>
