@@ -3,7 +3,6 @@ import os
 from tkinter import messagebox
 
 key_mappings = {
-
     "backspace": "KEY_BACKSPACE",
     "caps_lock": "KEY_CAPS_LOCK",
     "delete": "KEY_DELETE",
@@ -46,6 +45,7 @@ key_mappings = {
     "left": "KEY_LEFT_ARROW",
     "ctrl_l": "KEY_LEFT_CTRL",
     "cmd": "KEY_LEFT_GUI",
+    "cmd_l": "KEY_LEFT_GUI",
     "shift": "KEY_LEFT_SHIFT",
     "shift_l": "KEY_LEFT_SHIFT",
     "menu": "KEY_MENU",
@@ -59,11 +59,16 @@ key_mappings = {
     "right": "KEY_RIGHT_ARROW",
     "ctrl_r": "KEY_RIGHT_CTRL",
     "cmd": "KEY_RIGHT_GUI",
+    "cmd_r": "KEY_RIGHT_GUI",
     "shift_r": "KEY_RIGHT_SHIFT",
     "tab": "KEY_TAB",
     "up": "KEY_UP_ARROW",
     "left": "KEY_LEFT_ARROW",
     "space": "KEY_SPACE",
+    "a": "'a'",
+    "c": "'c'",
+    "b": "'b'",
+    "d": "'d'",
     "a": "'a'",
     "c": "'c'",
     "b": "'b'",
@@ -102,6 +107,12 @@ key_mappings = {
     "0": "0",
 
 }
+key_mappings1 = {
+    "Rewind" : ["MEDIA_FAST_FORWARD", "MEDIA_REWIND"],
+    "Next": ["MEDIA_PREV", "MEDIA_NEXT"],
+    "Volume": ["MEDIA_VOLUME_DOWN", "MEDIA_VOLUME_UP"],
+    "brightness": ["CONSUMER_BRIGHTNESS_DOWN", "CONSUMER_BRIGHTNESS_UP"],
+}
 
 default_config = {
     "SW1": [7, "page_down"],
@@ -116,10 +127,6 @@ default_config = {
     "EN1": [20, "volume_up"],
     "EN2": [21, "brightness_up"],
 }
-ctrl_1_0 = 'MEDIA_VOL_DOWN'
-ctrl_1_1 = 'MEDIA_VOL_UP'
-ctrl_2_0 = 'CONSUMER_BRIGHTNESS_DOWN'
-ctrl_2_1 = 'CONSUMER_BRIGHTNESS_UP'
 def code_builder():
     if os.path.exists("config.json"):
         with open("config.json", "r") as file:
@@ -127,47 +134,59 @@ def code_builder():
             with open("code/code.ino", "w") as arduino_code:
                 arduino_code.write("")
             with open("code/code.ino", "a") as arduino_code:
+                ctrl_1_0 = key_mappings1[content["EN1"][1]][0]
+                ctrl_1_1 = key_mappings1[content["EN1"][1]][1]
+                ctrl_2_0 = key_mappings1[content["EN2"][1]][0]
+                ctrl_2_1 = key_mappings1[content["EN2"][1]][1]
 
                 # Adding Libraries
                 arduino_code.write("#include <HID-Project.h> \n\n// Define pin constants\n")
                 
                 # Define pin constants
                 for key in content:
-                    arduino_code.write(f"const int {key} = {content[key][0]};\n")
+                    print(key == "EN1")
+                    if str(key) != "EN1" or "EN2":
+                        arduino_code.write(f"const int {key} = {content[key][0]};\n")
                 arduino_code.write("#define CLK 3\n#define DT 5\n#define SW A1\n#define LED_ZOOM A2\n#define LED_VOLUME A3\n")
                 
                 # Variables to hold the last state of the buttons
                 arduino_code.write("\n// Variables to hold the last state of the buttons\n")
                 for key in content:
-                    arduino_code.write(f"bool lastState{key} = HIGH;\n")
+                    if key != "EN1" or "EN2":
+                        arduino_code.write(f"bool lastState{key} = HIGH;\n")
                 arduino_code.write('int counter = 0;\nint currentStateCLK;\nint lastStateCLK;\nint btnstate = 0;\nString currentDir = "";\nunsigned long lastButtonPress = 0;\nconst unsigned long debounceDelay = 50;\nbool buttonPressed = false;\n')
 
                 # setup function
                 arduino_code.write("\nvoid setup() {\n")
                 arduino_code.write("\tSerial.begin(9600);\n\tKeyboard.begin();\n\tConsumer.begin();\n\n")
                 for key in content:
-                    arduino_code.write(f"\tpinMode({key}, INPUT_PULLUP);\n")
+                    if key != "EN1" or "EN2":
+                        arduino_code.write(f"\tpinMode({key}, INPUT_PULLUP);\n")
                 arduino_code.write("\tpinMode(CLK, INPUT);\n\tpinMode(DT, INPUT);\n\tpinMode(SW, INPUT_PULLUP);\n\tpinMode(LED_ZOOM, OUTPUT);\n\tpinMode(LED_VOLUME, OUTPUT);\n\tlastStateCLK = digitalRead(CLK);\n")
                 arduino_code.write("}\n")
                 
                 # loop function
                 arduino_code.write("\nvoid loop() {\n")
                 for key in content:
-                    arduino_code.write(f"\tbool currentState{key} = digitalRead({key});\n")
+                    if key != "EN1" or "EN2":
+                        arduino_code.write(f"\tbool currentState{key} = digitalRead({key});\n")
                 arduino_code.write("\n")
                 for key in content:
-                    arduino_code.write(f"\n\t// Check if button {key} was pressed\n")
-                    arduino_code.write(f"\tif (currentState{key} == LOW && lastState{key} == HIGH) {{\n")
-                    temp = content[key][1].split("+")
-                    for _ in temp:
-                        arduino_code.write(f"\t\tKeyboard.press({key_mappings[_]});\n")
-                    arduino_code.write(f"\t\tdelay(100);\n")
-                    arduino_code.write(f"\t\tKeyboard.releaseAll();\n")
+                    if key != "EN1" or "EN2":
+                        arduino_code.write(f"\n\t// Check if button {key} was pressed\n")
+                        arduino_code.write(f"\tif (currentState{key} == LOW && lastState{key} == HIGH) {{\n")
+                        temp = content[key][1].split("+")
+                        for _ in temp:
+                            if _ in key_mappings:
+                                arduino_code.write(f"\t\tKeyboard.press({key_mappings[_]});\n")
+                        arduino_code.write(f"\t\tdelay(100);\n")
+                        arduino_code.write(f"\t\tKeyboard.releaseAll();\n")
 
-                    arduino_code.write("\t}\n")
+                        arduino_code.write("\t}\n")
                 arduino_code.write("\t// Update the last state of each button\n")
                 for key in content:
-                    arduino_code.write(f"\tlastState{key} = currentState{key};\n")
+                    if key != "EN1" or "EN2":
+                        arduino_code.write(f"\tlastState{key} = currentState{key};\n")
                 arduino_code.write( "\n\tcurrentStateCLK = digitalRead(CLK);\n\tif (currentStateCLK != lastStateCLK && currentStateCLK == 1) {")
                 arduino_code.write('\n\t\tif (digitalRead(DT) != currentStateCLK) {\n\t\t\tcounter--;\n\t\t\tcurrentDir = "CCW";\n\t\t} else {\n\t\t\tcounter++;\n\t\t\tcurrentDir = "CW";\n\t\t}')
                 arduino_code.write('\n\t// Perform action based on the current mode\n\tif (btnstate == 1) {  // Volume control mode\n\t\tif (currentDir == "CW") {')

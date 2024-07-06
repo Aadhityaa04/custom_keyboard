@@ -10,6 +10,8 @@ const int SW6 = 18;
 const int SW7 = 8;
 const int SW8 = 10;
 const int SW9 = 16;
+const int EN1 = 20;
+const int EN2 = 21;
 #define CLK 3
 #define DT 5
 #define SW A1
@@ -26,6 +28,8 @@ bool lastStateSW6 = HIGH;
 bool lastStateSW7 = HIGH;
 bool lastStateSW8 = HIGH;
 bool lastStateSW9 = HIGH;
+bool lastStateEN1 = HIGH;
+bool lastStateEN2 = HIGH;
 int counter = 0;
 int currentStateCLK;
 int lastStateCLK;
@@ -49,6 +53,8 @@ void setup() {
 	pinMode(SW7, INPUT_PULLUP);
 	pinMode(SW8, INPUT_PULLUP);
 	pinMode(SW9, INPUT_PULLUP);
+	pinMode(EN1, INPUT_PULLUP);
+	pinMode(EN2, INPUT_PULLUP);
 	pinMode(CLK, INPUT);
 	pinMode(DT, INPUT);
 	pinMode(SW, INPUT_PULLUP);
@@ -67,67 +73,90 @@ void loop() {
 	bool currentStateSW7 = digitalRead(SW7);
 	bool currentStateSW8 = digitalRead(SW8);
 	bool currentStateSW9 = digitalRead(SW9);
+	bool currentStateEN1 = digitalRead(EN1);
+	bool currentStateEN2 = digitalRead(EN2);
 
 
 	// Check if button SW1 was pressed
 	if (currentStateSW1 == LOW && lastStateSW1 == HIGH) {
-		Keyboard.press(KEY_PAGE_UP);
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW2 was pressed
 	if (currentStateSW2 == LOW && lastStateSW2 == HIGH) {
-		Keyboard.press(KEY_PAGE_DOWN);
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press(KEY_TAB);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW3 was pressed
 	if (currentStateSW3 == LOW && lastStateSW3 == HIGH) {
-		Keyboard.press(KEY_PAGE_UP);
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press('d');
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW4 was pressed
 	if (currentStateSW4 == LOW && lastStateSW4 == HIGH) {
-		Keyboard.press(KEY_PAGE_DOWN);
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press('l');
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW5 was pressed
 	if (currentStateSW5 == LOW && lastStateSW5 == HIGH) {
-		Keyboard.press(KEY_PAGE_UP);
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press('i');
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW6 was pressed
 	if (currentStateSW6 == LOW && lastStateSW6 == HIGH) {
-		Keyboard.press(KEY_PAGE_DOWN);
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press('k');
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW7 was pressed
 	if (currentStateSW7 == LOW && lastStateSW7 == HIGH) {
-		Keyboard.press(KEY_PAGE_UP);
+		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press('p');
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW8 was pressed
 	if (currentStateSW8 == LOW && lastStateSW8 == HIGH) {
-		Keyboard.press(KEY_PAGE_DOWN);
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW9 was pressed
 	if (currentStateSW9 == LOW && lastStateSW9 == HIGH) {
-		Keyboard.press(KEY_PAGE_UP);
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button EN1 was pressed
+	if (currentStateEN1 == LOW && lastStateEN1 == HIGH) {
+		delay(100);
+		Keyboard.releaseAll();
+	}
+
+	// Check if button EN2 was pressed
+	if (currentStateEN2 == LOW && lastStateEN2 == HIGH) {
 		delay(100);
 		Keyboard.releaseAll();
 	}
@@ -141,6 +170,8 @@ void loop() {
 	lastStateSW7 = currentStateSW7;
 	lastStateSW8 = currentStateSW8;
 	lastStateSW9 = currentStateSW9;
+	lastStateEN1 = currentStateEN1;
+	lastStateEN2 = currentStateEN2;
 
 	currentStateCLK = digitalRead(CLK);
 	if (currentStateCLK != lastStateCLK && currentStateCLK == 1) {
@@ -154,17 +185,17 @@ void loop() {
 	// Perform action based on the current mode
 	if (btnstate == 1) {  // Volume control mode
 		if (currentDir == "CW") {
-			Consumer.write(MEDIA_VOL_DOWN);
+			Consumer.write(MEDIA_PREV);
 		} else if (currentDir == "CCW") {
-			Consumer.write(MEDIA_VOL_UP);
+			Consumer.write(MEDIA_NEXT);
 		}
 		} else {  // Zoom control mode
 			if (currentDir == "CW") {
-				Consumer.write(CONSUMER_BRIGHTNESS_DOWN);
+				Consumer.write(MEDIA_VOLUME_DOWN);
 				delay(50);
 				Keyboard.releaseAll();
 			} else if (currentDir == "CCW") {
-				Consumer.write(CONSUMER_BRIGHTNESS_UP);
+				Consumer.write(MEDIA_VOLUME_UP);
 				delay(50);
 				Keyboard.releaseAll();
 			}

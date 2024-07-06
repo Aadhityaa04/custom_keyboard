@@ -1,46 +1,46 @@
 {
     "SW1": [
         7,
-        "q"
+        "alt_l+tab"
     ],
     "SW2": [
         4,
-        "w"
+        "cmd_r+tab"
     ],
     "SW3": [
         2,
-        "e"
+        "cmd_r+d"
     ],
     "SW4": [
         14,
-        "r"
+        "cmd_r+l"
     ],
     "SW5": [
         15,
-        "t"
+        "cmd_r+i"
     ],
     "SW6": [
         18,
-        "y"
+        "cmd_r+k"
     ],
     "SW7": [
         8,
-        "u"
+        "cmd_r+p"
     ],
     "SW8": [
         10,
-        "i"
+        "alt_l+tab"
     ],
     "SW9": [
         16,
-        "o"
+        "alt_l+tab"
     ],
     "EN1": [
         20,
-        "Rewind"
+        "Next"
     ],
     "EN2": [
         21,
-        "Next"
+        "Volume"
     ]
 }

@@ -10,7 +10,7 @@ from pynput import keyboard
 
 
 command_sequence = []
-clear_timeout = 0.2
+clear_timeout = 0.5
 timer = None
 lst = []
 keys = []
@@ -26,7 +26,7 @@ def get_com_ports():
 
 
 def update_command_to_json(switch_number, command):
-    if "EN" not in switch_number:
+    if "EN" not in str(switch_number):
       if os.path.exists("config.json"):
           with open("config.json", "r") as file:
               content = json.load(file)
@@ -112,18 +112,20 @@ def verify_layout():
     win = customtkinter.CTk()
     win.geometry("350x210")
     win.resizable(False, False)
-    x_place = [160, 220, 280]
-    global lst
-    for i in range(9):
-        lst.append(customtkinter.CTkLabel(win, width=50, height=50, text=i + 1, corner_radius=15, bg_color="#2682cb"))
-        if i < 3:
-            lst[i].place(x=x_place[i % 3], y=20)
-        elif 3 <= i < 6:
-            lst[i].place(x=x_place[i % 3], y=80)
-        else:
-            lst[i].place(x=x_place[i % 3], y=140)
+    # x_place = [160, 220, 280]
+    # global lst
+    # for i in range(9):
+    #     lst.append(customtkinter.CTkLabel(win, width=50, height=50, text=i + 1, corner_radius=15, bg_color="#2682cb"))
+    #     if i < 3:
+    #         lst[i].place(x=x_place[i % 3], y=20)
+    #     elif 3 <= i < 6:
+    #         lst[i].place(x=x_place[i % 3], y=80)
+    #     else:
+    #         lst[i].place(x=x_place[i % 3], y=140)
 
-    threading.Thread(target=start_key_listener, daemon=True).start()
+    # threading.Thread(target=start_key_listener, daemon=True).start()
+    lab = customtkinter.CTkLabel(win, text="Coming soon")
+    lab.place(x=130, y=80)
     win.mainloop()
 
 def start_key_listener():
@@ -147,6 +149,7 @@ def on_release(key):
             for _ in command_sequence:
                 temp += f"{_}+"
             temp = temp[:len(temp)-1]
+            print(command_sequence)
             for key in content:
                 if content[key][1] == temp:
                     print(int(key[2:]))
