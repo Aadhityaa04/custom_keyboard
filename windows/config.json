@@ -5,27 +5,27 @@
     ],
     "SW2": [
         4,
-        "cmd_r+tab"
+        "alt_l+tab"
     ],
     "SW3": [
         2,
-        "cmd_r+d"
+        "alt_l+tab"
     ],
     "SW4": [
         14,
-        "cmd_r+l"
+        "alt_l+tab"
     ],
     "SW5": [
         15,
-        "cmd_r+i"
+        "alt_l+tab"
     ],
     "SW6": [
         18,
-        "cmd_r+k"
+        "alt_l+tab"
     ],
     "SW7": [
         8,
-        "cmd_r+p"
+        "alt_l+tab"
     ],
     "SW8": [
         10,
@@ -37,10 +37,10 @@
     ],
     "EN1": [
         20,
-        "Next"
+        "Volume"
     ],
     "EN2": [
         21,
-        "Volume"
+        "brightness"
     ]
 }

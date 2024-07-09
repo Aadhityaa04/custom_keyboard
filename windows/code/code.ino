@@ -79,7 +79,7 @@ void loop() {
 
 	// Check if button SW2 was pressed
 	if (currentStateSW2 == LOW && lastStateSW2 == HIGH) {
-		Keyboard.press(KEY_RIGHT_GUI);
+		Keyboard.press(KEY_LEFT_ALT);
 		Keyboard.press(KEY_TAB);
 		delay(100);
 		Keyboard.releaseAll();
@@ -87,40 +87,40 @@ void loop() {
 
 	// Check if button SW3 was pressed
 	if (currentStateSW3 == LOW && lastStateSW3 == HIGH) {
-		Keyboard.press(KEY_RIGHT_GUI);
-		Keyboard.press('d');
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW4 was pressed
 	if (currentStateSW4 == LOW && lastStateSW4 == HIGH) {
-		Keyboard.press(KEY_RIGHT_GUI);
-		Keyboard.press('l');
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW5 was pressed
 	if (currentStateSW5 == LOW && lastStateSW5 == HIGH) {
-		Keyboard.press(KEY_RIGHT_GUI);
-		Keyboard.press('i');
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW6 was pressed
 	if (currentStateSW6 == LOW && lastStateSW6 == HIGH) {
-		Keyboard.press(KEY_RIGHT_GUI);
-		Keyboard.press('k');
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
 		delay(100);
 		Keyboard.releaseAll();
 	}
 
 	// Check if button SW7 was pressed
 	if (currentStateSW7 == LOW && lastStateSW7 == HIGH) {
-		Keyboard.press(KEY_RIGHT_GUI);
-		Keyboard.press('p');
+		Keyboard.press(KEY_LEFT_ALT);
+		Keyboard.press(KEY_TAB);
 		delay(100);
 		Keyboard.releaseAll();
 	}
@@ -163,17 +163,17 @@ void loop() {
 	// Perform action based on the current mode
 	if (btnstate == 1) {  // Volume control mode
 		if (currentDir == "CW") {
-			Consumer.write(MEDIA_PREV);
+			Consumer.write(MEDIA_VOLUME_DOWN);
 		} else if (currentDir == "CCW") {
-			Consumer.write(MEDIA_NEXT);
+			Consumer.write(MEDIA_VOLUME_UP);
 		}
 		} else {  // Zoom control mode
 			if (currentDir == "CW") {
-				Consumer.write(MEDIA_VOLUME_DOWN);
+				Consumer.write(CONSUMER_BRIGHTNESS_DOWN);
 				delay(50);
 				Keyboard.releaseAll();
 			} else if (currentDir == "CCW") {
-				Consumer.write(MEDIA_VOLUME_UP);
+				Consumer.write(CONSUMER_BRIGHTNESS_UP);
 				delay(50);
 				Keyboard.releaseAll();
 			}
@@ -205,3 +205,4 @@ void loop() {
 		buttonPressed = false;
 	}
 }
+ECHO is on.

@@ -201,7 +201,7 @@ def get_board_list():
 def upload_code(fqbn, comport):
     if com_port_selected is None:
         messagebox.showwarning("Warning", message="Please select the COM port")
-    print(fqbn, com_port_selected, "\n\n\n\n")
+    # print(fqbn, com_port_selected, "\n\n\n\n")
     arduino = pyduinocli.Arduino("./arduino-cli")
     arduino.compile(r"code/code.ino", fqbn=fqbn)
     arduino.upload(r"code\code.ino", fqbn=fqbn, port=com_port_selected)
